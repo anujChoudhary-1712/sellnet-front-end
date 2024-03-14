@@ -5,13 +5,15 @@ import { usePathname } from "next/navigation";
 import { AppContext } from "@/contextapi/contextapi";
 import Sidebar from "../Header/Sidebar";
 
+const authRoutes = ["/login","/register/buyer","/register/seller","/verifyEmail"]
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
     <div>
       <AppContext>
-        {pathname !== "/login" && <Navbar />}
+        {!authRoutes.includes(pathname) && !pathname.startsWith("/dashboard") && <Navbar />}
         {children}
       </AppContext>
     </div>
