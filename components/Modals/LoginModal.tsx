@@ -6,10 +6,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { postRequest } from "@/actions/APICalls";
 import { Context } from "@/contextapi/contextapi";
+import Cookies from "js-cookie"
 
 const LoginModal = () => {
   const router = useRouter();
-  const {setAuthenticated} = useContext(Context)
+  const {setAuthenticated,setUser} = useContext(Context)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -46,7 +47,8 @@ const LoginModal = () => {
       }
 
       console.log(data)
-      localStorage.setItem('token',JSON.stringify(data.token))
+      Cookies.set("token",data.token)
+      setUser(data.user)
       setAuthenticated(true)
       router.push(`/`)
     } catch (error) {

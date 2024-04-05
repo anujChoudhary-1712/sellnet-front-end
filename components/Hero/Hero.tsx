@@ -7,7 +7,7 @@ export default function Hero() {
         Elevate Your Designs with Our Exclusive Digital Assets Marketplace!
       </p>
       <p className="text-white sm:text-xl font-light sm:w-1/2 text-center">
-        Welcome to SellNet, where creativity meets functionality! Unleash the
+        Welcome to Creatify, where creativity meets functionality! Unleash the
         power of stunning design elements and elevate your projects with our
         premium UI kits, icons, and more.
       </p>

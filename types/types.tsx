@@ -4,6 +4,7 @@ export type cartItems = {
 };
 
 export type UserType = {
+  _id:any;
   fullname: String;
   email: string;
   companyName?: String;

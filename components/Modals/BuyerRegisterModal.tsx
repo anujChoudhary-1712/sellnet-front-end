@@ -51,7 +51,7 @@ const BuyerRegisterModal = () => {
       }
 
       console.log(data)
-      router.push(`/verifyEmail}`)
+      router.push(`/verifyEmail`)
     } catch (error) {
       console.log(error)
     }

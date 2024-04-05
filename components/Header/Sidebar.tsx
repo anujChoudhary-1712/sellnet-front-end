@@ -13,9 +13,11 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "../ui/button";
 import { Context } from "@/contextapi/contextapi";
+import { useRouter } from "next/navigation";
 
 export default function Sidebar() {
-  const {isAuthenticated} = useContext(Context)
+  const { isAuthenticated } = useContext(Context);
+  const router = useRouter();
   return (
     <Sheet>
       <SheetTrigger className="sm:hidden">
@@ -28,16 +30,19 @@ export default function Sidebar() {
       <SheetContent>
         <nav className="flex flex-col gap-4 text-violet-700 text-xl mt-10 font-light">
           <Link href={"/"}>Home</Link>
-          <Link href={"/"}>Products</Link>
-          <Link href={"/"}>Blog</Link>
-          <Link href={"/"}>Contact</Link>
+          <Link href={"/products"}>Products</Link>
+          <Link href={"/blog"}>Blog</Link>
+          <Link href={"/contact"}>Contact</Link>
         </nav>
-        {!isAuthenticated && <Button
-          variant="default"
-          className="bg-[#7332bd] text-white relative top-2/3 text-xl h-12 rounded-3xl w-full font-bold hover:bg-white hover:text-[#7332bd] hover:border-[1px] hover:border-[#7332bd]"
-        >
-          Sign in
-        </Button>}
+        {!isAuthenticated && (
+          <Button
+            onClick={() => router.push("/login")}
+            variant="default"
+            className="bg-[#7332bd] text-white relative top-2/3 text-xl h-12 rounded-3xl w-full font-bold hover:bg-white hover:text-[#7332bd] hover:border-[1px] hover:border-[#7332bd]"
+          >
+            Sign in
+          </Button>
+        )}
       </SheetContent>
     </Sheet>
   );

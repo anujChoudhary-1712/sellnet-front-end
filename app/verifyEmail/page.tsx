@@ -3,6 +3,7 @@ import { postRequest } from '@/actions/APICalls'
 import { Context } from '@/contextapi/contextapi'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useContext, useEffect } from 'react'
+import Cookies from "js-cookie"
 
 const VerifyEmail = () => {
     const params = useSearchParams()
@@ -22,7 +23,7 @@ const VerifyEmail = () => {
 
                 setUser(data.user)
                 setAuthenticated(true)
-                localStorage.setItem('token',data.token)
+                Cookies.set("token",data.token)
                 router.push("/")
             } catch (error) {
                 console.log(error)
