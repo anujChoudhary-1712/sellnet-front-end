@@ -18,7 +18,7 @@ export default function Cart() {
   const { cartItems, total, setTotal,setCartItems } = useContext(Context);
 
   const handleRemoveItem = (name:String,price:number) =>{
-    const updatedArr = cartItems.filter((item)=>item.itemName !== name)
+    const updatedArr = cartItems.filter((item:any)=>item.itemName !== name)
     setCartItems(updatedArr)
     setTotal(total - price)
   }
@@ -41,7 +41,7 @@ export default function Cart() {
         {cartItems.length > 0 && (
           <div className="mt-6">
             <p className="text-lg font-normal">Cart Items</p>
-            {cartItems.map((item, index) => {
+            {cartItems.map((item:any, index:number) => {
               return (
                 <div
                   key={index}
