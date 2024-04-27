@@ -7,6 +7,7 @@ import NextTopLoader from "nextjs-toploader";
 import Sidebar from "../Header/Sidebar";
 import DashboardLeft from "../GeneralComponents/DashboardLeft";
 import {Toaster} from "react-hot-toast"
+import Footer from "../Footer/Footer";
 
 const authRoutes = [
   "/login",
@@ -31,6 +32,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           !pathname.startsWith("/dashboard") && <Navbar />}
         {pathname.startsWith("/dashboard") && <DashboardLeft />}
         {children}
+        {!authRoutes.includes(pathname) &&
+          !pathname.startsWith("/dashboard") && <Footer />}
       </AppContext>
     </div>
   );

@@ -31,7 +31,6 @@ export default function Sidebar() {
         <nav className="flex flex-col gap-4 text-violet-700 text-xl mt-10 font-light">
           <Link href={"/"}>Home</Link>
           <Link href={"/products"}>Products</Link>
-          <Link href={"/blog"}>Blog</Link>
           <Link href={"/contact"}>Contact</Link>
         </nav>
         {!isAuthenticated && (

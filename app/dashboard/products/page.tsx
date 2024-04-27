@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Context } from "@/contextapi/contextapi";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useContext, useEffect } from "react";
 
 const Page = () => {
@@ -52,7 +53,7 @@ const Page = () => {
 
               <CardContent className="flex flex-col mt-4 px-4">
                 <div className="flex justify-between items-center w-full">
-                  <CardTitle>{product.name}</CardTitle>
+                  <CardTitle className="hover:underline"><Link href={`/dashboard/products/${product._id}`}>{product.name}</Link></CardTitle>
                   <p>{product.category}</p>
                 </div>
 
