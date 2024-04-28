@@ -72,7 +72,7 @@ export default function Cart() {
   const makePayment = async () =>{
     try {
       const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY || "")
-      const body = JSON.stringify({products:cartItems})
+      const body = JSON.stringify({products:cartItems,userId:user._id})
       
       const res = await postRequest("payment/create-checkout-session",body)
       

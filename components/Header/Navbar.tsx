@@ -18,7 +18,6 @@ export default function Navbar() {
         <nav className="hidden sm:flex gap-4 text-white font-light">
           <Link href={"/"}>Home</Link>
           <Link href={"/products"}>Products</Link>
-          <Link href={"/contact"}>Contact</Link>
         </nav>
       </div>
       <div className="flex gap-4 items-center">
