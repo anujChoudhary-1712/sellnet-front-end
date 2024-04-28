@@ -7,6 +7,7 @@ import Link from "next/link";
 import { postRequest } from "@/actions/APICalls";
 import { Context } from "@/contextapi/contextapi";
 import Cookies from "js-cookie"
+import Loader from "../GeneralComponents/Loader";
 
 const LoginModal = () => {
   const router = useRouter();
@@ -14,6 +15,7 @@ const LoginModal = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading,setLoading] = useState(false)
 
   const handleSubmit = async(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
     e.preventDefault()
@@ -38,6 +40,7 @@ const LoginModal = () => {
 
       const body = JSON.stringify({email,password})
 
+      setLoading(true)
       const data = await postRequest("users/login",body)
 
       if(data?.error){
@@ -50,8 +53,10 @@ const LoginModal = () => {
       Cookies.set("token",data.token)
       setUser(data.user)
       setAuthenticated(true)
+      setLoading(false)
       router.push(`/`)
     } catch (error) {
+      setLoading(false)
       console.log(error)
     }
   }
@@ -97,10 +102,11 @@ const LoginModal = () => {
           </fieldset>
           <Button
             variant="default"
-            className="hidden sm:block bg-[#7332bd] rounded-md text-white font-bold"
+            className={`hidden sm:block bg-[#7332bd] rounded-md text-white font-bold`}
+            disabled={isLoading}
             onClick={(e)=>handleSubmit(e)}
           >
-            Log in
+            {isLoading ? <Loader size={"4"} color="white"/> : <p>Log in</p>}
           </Button>
           {error && (
             <div className="h-8 w-full">

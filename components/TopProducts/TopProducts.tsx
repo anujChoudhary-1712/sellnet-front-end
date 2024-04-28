@@ -33,7 +33,7 @@ const TopProducts = () => {
             <Loader color="black"/>
           </div>
         ) : (
-          <section className="flex flex-col mx-auto max-w-[1400px] w-10/12 pt-6 pb-20">
+          <section className="flex flex-col mx-auto max-w-[1400px] w-11/12 xl:w-10/12 pt-6 pb-20">
             <p className="text-[#0F1035] text-3xl font-bold mb-6">
               Top Products
             </p>

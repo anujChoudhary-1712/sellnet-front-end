@@ -13,17 +13,18 @@ import { IoCartOutline } from "react-icons/io5";
 import { Context } from "@/contextapi/contextapi";
 import { MdDeleteOutline } from "react-icons/md";
 import { Button } from "../ui/button";
-import { deleteRequest, getRequest } from "@/actions/APICalls";
+import { deleteRequest, getRequest, postRequest } from "@/actions/APICalls";
 import toast from "react-hot-toast";
 import Loader from "../GeneralComponents/Loader";
+import {loadStripe} from "@stripe/stripe-js"
 
 export default function Cart() {
   const { user } = useContext(Context);
   const [cartItems, setCartItems] = useState<any[]>([]);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(10);
   const [isLoading, setLoading] = useState(true);
 
-  const fetchCartItems = useCallback( async () => {
+  const fetchCartItems = useCallback(async () => {
     try {
       const res = await getRequest(`cart/get/${user._id}`);
       if (!res.success) {
@@ -33,7 +34,7 @@ export default function Cart() {
 
       setCartItems(res?.data?.content);
 
-      let totalAmount: number = 0;
+      let totalAmount: number = 10;
       for (let cart of res?.data?.content) {
         totalAmount += cart.price;
       }
@@ -43,7 +44,7 @@ export default function Cart() {
     } finally {
       setLoading(false);
     }
-  },[user._id])
+  }, [user._id]);
 
   useEffect(() => {
     if (user?._id) {
@@ -67,6 +68,29 @@ export default function Cart() {
       console.log(error);
     }
   };
+
+  const makePayment = async () =>{
+    try {
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY || "")
+      const body = JSON.stringify({products:cartItems})
+      
+      const res = await postRequest("payment/create-checkout-session",body)
+      
+      if(!res.success){
+        console.log(res?.message)
+        return
+      }
+
+      const sessionId = res?.id
+      const result:any = stripe?.redirectToCheckout({sessionId})
+
+      if(result.error){
+        console.log(result.error)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <Sheet>
       <SheetTrigger onClick={fetchCartItems}>
@@ -115,10 +139,21 @@ export default function Cart() {
                 </div>
               );
             })}
-            <div className="flex items-center justify-between w-full my-5">
-              <p className="text-sm">Total Amount</p>
-              <p className="text-sm">{`Rs. ${total}`}</p>
+            <div className="flex flex-col gap-2 my-4">
+              <div className="flex items-center justify-between w-full">
+                <p className="text-sm">Shipping</p>
+                <p className="text-sm">Free</p>
+              </div>
+              <div className="flex items-center justify-between w-full">
+                <p className="text-sm">Total Amount</p>
+                <p className="text-sm">{`Rs. ${total}`}</p>
+              </div>
             </div>
+            <Button
+              variant={"default"}
+              className={`bg-[#7332bd] rounded-md w-full text-white font-medium mt-2`}
+              onClick={makePayment}
+            >Continue to checkout</Button>
           </div>
         )}
       </SheetContent>

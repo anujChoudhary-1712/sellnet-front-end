@@ -4,19 +4,25 @@ import Loader from "@/components/GeneralComponents/Loader";
 import { Button } from "@/components/ui/button";
 import { Context } from "@/contextapi/contextapi";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const Page = () => {
   const { id } = useParams();
-  const { user } = useContext(Context);
+  const router = useRouter();
+  const { user, isAuthenticated } = useContext(Context);
   const [product, setProduct] = useState<any>();
   const [isLoading, setLoading] = useState(true);
-
   const handleAddToCart = async () => {
     try {
       const body = JSON.stringify({ productId: product._id, userId: user._id });
+
+      if (!isAuthenticated) {
+        router.push("/login");
+        toast.error("You need to login first");
+        return;
+      }
       const res = await postRequest("cart/add", body);
 
       if (!res.success) {
@@ -58,9 +64,16 @@ const Page = () => {
         <div className="flex flex-col-reverse gap-6 md:gap-4 md:flex-row justify-between items-center w-full">
           <div className="flex flex-col justify-between w-full md:w-5/12 md:min-h-[400px]">
             <div className="flex flex-col gap-4">
-                <h2 className="text-black font-bold text-4xl">{product?.name}</h2>
-                <p className="font-medium -mt-2">{`Rs ${product?.price} `} <span className="text-slate-500 font-normal">| {product?.category}</span></p>
-                <p className="text-slate-500 font-normal italic">{product?.description}</p>
+              <h2 className="text-black font-bold text-4xl">{product?.name}</h2>
+              <p className="font-medium -mt-2">
+                {`Rs ${product?.price} `}{" "}
+                <span className="text-slate-500 font-normal">
+                  | {product?.category}
+                </span>
+              </p>
+              <p className="text-slate-500 font-normal italic">
+                {product?.description}
+              </p>
             </div>
             <Button
               className="bg-violet-700 text-white border hover:bg-white hover:text-blue-700 hover:border-blue-700 mt-8 md:mt-0"
