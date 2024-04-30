@@ -53,11 +53,11 @@ const LoginModal = () => {
       Cookies.set("token",data.token)
       setUser(data.user)
       setAuthenticated(true)
-      setLoading(false)
       router.push(`/`)
     } catch (error) {
-      setLoading(false)
       console.log(error)
+    } finally{
+      setLoading(false)
     }
   }
 
